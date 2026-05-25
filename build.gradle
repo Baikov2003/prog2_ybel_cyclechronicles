@@ -3,6 +3,10 @@ plugins {
     id 'com.diffplug.spotless' version '8.4.0'
 }
 
+configurations {
+    mockitoAgent
+}
+
 repositories {
     mavenCentral()
 }
@@ -13,6 +17,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     testImplementation 'org.mockito:mockito-core:5.23.0'
+    mockitoAgent('org.mockito:mockito-core:5.23.0') { transitive = false }
 }
 
 
@@ -29,6 +34,7 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
     useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}"
 }
 
 spotless {
